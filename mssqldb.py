@@ -15,14 +15,16 @@ SQLQuery = ("""
             FROM dbo.acc_monitor_log 
             INNER JOIN dbo.USERINFO 
                 ON dbo.acc_monitor_log.pin = dbo.USERINFO.Badgenumber
-            WHERE time >= '2020-07-02' AND Name= ?
+            WHERE time >= ? AND Name= ?
             ORDER BY hhmmss
             ;
             """)
 
-def last_attendance_BO(name):
-    name2 = [str(name)]
-    cursor.execute(SQLQuery,name2)
+def last_attendance_BO(massage_list):
+    name2 = str(massage_list[0])
+    day_time = massage_list[1]
+    params = [day_time, name2]
+    cursor.execute(SQLQuery, params)
     results = cursor.fetchall()
     last_coming=[]
     for row in results:
